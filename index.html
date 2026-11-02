@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISEDEP-HAYTI | Intégration Sociale et Économique de Développement et de Progrès</title>
+<meta name="description" content="ISEDEP-HAYTI : formation professionnelle, création d'entreprises, emploi stable et protection des droits de la personne, en particulier de l'enfance.">
+<style>
+  :root {
+    --paper: #f7f4ec;
+    --paper-2: #ece7da;
+    --ink: #14233b;
+    --ink-soft: #3d4b62;
+    --gold: #e08a00;
+    --gold-on-ink: #e2b655;
+    --rule: #cfc7b3;
+    --btn-bg: #006f86;
+    --btn-fg: #ffffff;
+    --field-bg: #fffdf8;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #0f1a2c;
+      --paper-2: #16253c;
+      --ink: #f1ecde;
+      --ink-soft: #b9c1cf;
+      --gold: #ffa726;
+      --gold-on-ink: #ffa726;
+      --rule: #2c3d58;
+      --btn-bg: #00bad9;
+      --btn-fg: #0f1a2c;
+      --field-bg: #0f1a2c;
+      color-scheme: dark;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  h1, h2, h3, .wordmark {
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 0;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+  .skip { position: absolute; left: -999px; top: 0; background: var(--btn-bg); color: var(--btn-fg); padding: .6rem 1rem; z-index: 10; }
+  .skip:focus { left: 0; }
+
+  .wrap { width: min(100% - 2.5rem, 68rem); margin-inline: auto; }
+
+  /* En-tête */
+  header.site { border-bottom: 1px solid var(--rule); }
+  header.site .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem 2rem; padding-block: 1rem; }
+  .wordmark { font-size: 1.35rem; text-decoration: none; letter-spacing: .02em; display: inline-flex; align-items: center; gap: .7rem; }
+  .wordmark img { width: 44px; height: auto; display: block; }
+  nav ul { list-style: none; display: flex; flex-wrap: wrap; gap: .25rem 1.4rem; margin: 0; padding: 0; }
+  nav a { text-decoration: none; color: var(--ink-soft); font-size: .98rem; padding-block: .3rem; display: inline-block; }
+  nav a:hover { color: var(--ink); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 6px; text-decoration-thickness: 2px; }
+
+  /* Accueil */
+  .hero { padding-block: clamp(3rem, 9vw, 7rem); }
+  .hero .wrap { display: grid; grid-template-columns: 6px 1fr; gap: clamp(1.2rem, 3vw, 2.4rem); }
+  .hero .body { display: grid; gap: 2.5rem; align-items: center; }
+  @media (min-width: 56rem) { .hero .body { grid-template-columns: 1.5fr 1fr; } }
+  .hero .emblem { width: min(100%, 22rem); height: auto; justify-self: center; }
+  .hero .bar { background: var(--gold); border-radius: 3px; }
+  .hero h1 { font-size: clamp(3.2rem, 12vw, 8rem); letter-spacing: -.01em; }
+  .hero .full { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif; font-size: clamp(1.15rem, 2.6vw, 1.6rem); color: var(--ink-soft); margin: 1rem 0 0; max-width: 34ch; line-height: 1.35; }
+  .hero .lead { max-width: 52ch; margin: 1.75rem 0 0; font-size: 1.15rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+  .btn { display: inline-block; padding: .85rem 1.5rem; border-radius: 4px; font-weight: 600; text-decoration: none; border: 2px solid var(--btn-bg); background: var(--btn-bg); color: var(--btn-fg); font-size: 1rem; font-family: inherit; cursor: pointer; }
+  .btn:hover { filter: brightness(1.12); }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--ink); }
+  .btn.ghost:hover { background: var(--paper-2); filter: none; }
+
+  /* Sections */
+  section { padding-block: clamp(3rem, 7vw, 5.5rem); border-top: 1px solid var(--rule); }
+  section h2 { font-size: clamp(1.8rem, 4.5vw, 2.6rem); margin-bottom: 1.5rem; max-width: 22ch; }
+  .cols { display: grid; gap: 2rem 4rem; }
+  @media (min-width: 52rem) { .cols { grid-template-columns: 1fr 1.4fr; } }
+  .cols p { margin: 0 0 1rem; max-width: 60ch; }
+  .muted { color: var(--ink-soft); }
+
+  /* Champs d'activité : lignes séparées, pas de cartes */
+  .fields { list-style: none; margin: 0; padding: 0; }
+  .fields li { padding-block: 1.4rem; border-top: 1px solid var(--rule); display: grid; gap: .4rem 2rem; }
+  .fields li:last-child { border-bottom: 1px solid var(--rule); }
+  @media (min-width: 52rem) { .fields li { grid-template-columns: 1fr 1.4fr; } }
+  .fields h3 { font-size: 1.3rem; }
+  .fields p { margin: 0; color: var(--ink-soft); max-width: 58ch; }
+
+  /* Cours en ligne */
+  .courses { list-style: none; margin: 0; padding: 0; }
+  .courses li { padding-block: 1.5rem; border-top: 1px solid var(--rule); display: grid; gap: 1rem 2rem; }
+  .courses li:last-child { border-bottom: 1px solid var(--rule); }
+  @media (min-width: 52rem) { .courses li { grid-template-columns: 14rem 1fr; } }
+  .when { font-family: Georgia, "Iowan Old Style", serif; font-size: 1.15rem; font-weight: 700; }
+  .when small { display: block; font-family: "Segoe UI", system-ui, sans-serif; font-weight: 400; font-size: .95rem; color: var(--ink-soft); }
+  .courses h3 { font-size: 1.3rem; margin-bottom: .3rem; }
+  .courses p { margin: 0 0 .8rem; color: var(--ink-soft); max-width: 58ch; }
+  .courses .actions { margin-top: .6rem; }
+  .btn.small { padding: .6rem 1.1rem; font-size: .95rem; }
+  .empty { padding: 1.5rem; border-left: 4px solid var(--gold); background: var(--paper-2); max-width: 60ch; margin: 0; }
+  .howto { margin-top: 2rem; max-width: 60ch; color: var(--ink-soft); }
+
+  /* Cours en ligne */
+  .subhead { font-size: 1.4rem; margin: 2.5rem 0 1rem; }
+  .subhead:first-of-type { margin-top: 0; }
+  .course-list { list-style: none; margin: 0; padding: 0; }
+  .course-list li { border-top: 1px solid var(--rule); padding-block: 1.1rem; }
+  .course-list li:last-child { border-bottom: 1px solid var(--rule); }
+  .course-list h4 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif; font-size: 1.15rem; margin: 0 0 .25rem; }
+  .course-list .when { color: var(--gold); font-weight: 700; margin: 0 0 .3rem; }
+  .course-list p { margin: 0 0 .8rem; color: var(--ink-soft); }
+  .course-list .btn { padding: .55rem 1.1rem; font-size: .95rem; }
+  .empty { color: var(--ink-soft); font-style: italic; padding-block: 1.1rem; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin: 0; }
+
+  /* Adhésion */
+  .join { background: var(--paper-2); }
+  .join ul { margin: 0 0 1.5rem; padding-left: 1.2rem; max-width: 56ch; }
+  .join li { margin-bottom: .4rem; }
+  .fees { display: grid; gap: 1.5rem 3rem; margin-top: 1.5rem; }
+  @media (min-width: 40rem) { .fees { grid-template-columns: 1fr 1fr; } }
+  .fee { border-left: 4px solid var(--gold); padding-left: 1rem; }
+  .fee strong { display: block; font-family: Georgia, serif; font-size: 1.6rem; }
+
+  /* Contact */
+  address { font-style: normal; }
+  address p { margin: 0 0 1rem; }
+  address .lab { display: block; font-weight: 600; }
+  address ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .2rem 1.2rem; }
+  form { display: grid; gap: 1rem; }
+  label { font-weight: 600; display: block; margin-bottom: .3rem; }
+  input, textarea { width: 100%; font: inherit; color: var(--ink); background: var(--field-bg); border: 1.5px solid var(--ink-soft); border-radius: 4px; padding: .75rem .9rem; }
+  textarea { min-height: 9rem; resize: vertical; }
+  .note { font-size: .92rem; color: var(--ink-soft); margin: 0; }
+
+  footer { border-top: 1px solid var(--rule); padding-block: 2rem; color: var(--ink-soft); font-size: .95rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; }
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<header class="site">
+  <div class="wrap">
+    <a class="wordmark" href="#accueil"><img src="logo-petit.png" alt="" width="44" height="46"><span>ISEDEP-HAYTI</span></a>
+    <nav aria-label="Navigation principale">
+      <ul>
+        <li><a href="#mission">Mission</a></li>
+        <li><a href="#activites">Champs d'activité</a></li>
+        <li><a href="#cours">Cours en ligne</a></li>
+        <li><a href="#adhesion">Adhésion</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenu">
+  <div class="hero" id="accueil">
+    <div class="wrap">
+      <div class="bar" aria-hidden="true"></div>
+      <div class="body">
+      <div>
+        <h1>ISEDEP</h1>
+        <p class="full">Intégration Sociale et Économique de Développement et de Progrès Hayti</p>
+        <p class="lead">Une organisation qui forme ses membres, les initie à l'entrepreneuriat, cherche des voies vers un emploi stable et défend les droits de la personne, en particulier ceux de l'enfance.</p>
+        <div class="actions">
+          <a class="btn" href="#adhesion">Devenir membre</a>
+          <a class="btn ghost" href="#contact">Nous écrire</a>
+        </div>
+      </div>
+      <img class="emblem" src="logo.png" alt="Logo d'ISEDEP-HAYTI : six personnages colorés formant un cercle, dans un décagone turquoise" width="320" height="338">
+      </div>
+    </div>
+  </div>
+
+  <section id="mission">
+    <div class="wrap cols">
+      <h2>Former, entreprendre, protéger</h2>
+      <div>
+        <p>ISEDEP-HAYTI a été fondée le 21 mars 2024 par ses membres fondateurs à Port-au-Prince. Elle réunit des personnes décidées à contribuer au bien-être et au développement de la personne humaine.</p>
+        <p>Son action tient en quatre engagements : la formation professionnelle et spécialisée de ses membres, l'initiation à la création d'entreprises, la recherche de mécanismes pour un emploi stable et rémunérateur, et la protection des droits de la personne, en particulier de l'enfance.</p>
+        <p class="muted">Scott Rémy Mervilli est le Coordonnateur National de l'organisation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="activites">
+    <div class="wrap">
+      <h2>Nos champs d'activité</h2>
+      <ul class="fields">
+        <li>
+          <h3>Formation professionnelle et spécialisée</h3>
+          <p>Des formations pour renforcer les compétences des membres et les préparer au marché du travail.</p>
+        </li>
+        <li>
+          <h3>Initiation à la création d'entreprises</h3>
+          <p>Un accompagnement pour passer d'une idée à une activité économique : démarche, organisation, premiers pas.</p>
+        </li>
+        <li>
+          <h3>Emploi stable et rémunérateur</h3>
+          <p>La recherche de mécanismes qui aident les membres à accéder à un travail durable et correctement rémunéré.</p>
+        </li>
+        <li>
+          <h3>Protection des droits de la personne et de l'enfance</h3>
+          <p>La défense des droits de chacun, avec une attention particulière portée aux enfants.</p>
+        </li>
+        <li>
+          <h3>Autres formations</h3>
+          <p>Toute formation qui contribue au bien-être et au développement de la personne humaine.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="cours">
+    <div class="wrap">
+      <h2>Cours en ligne</h2>
+      <p class="muted" style="max-width:60ch;margin:0 0 2rem">Nos cours sont donnés à distance : en direct avec un formateur, ou à votre rythme grâce aux cours enregistrés. Il suffit d'un téléphone et d'une connexion Internet.</p>
+      <h3 class="subhead">Cours en direct</h3>
+      <ul class="courses" id="liste-cours"></ul>
+      <p class="empty" id="aucun-cours" hidden>Les prochains cours seront annoncés bientôt. Écrivez-nous pour être informé dès l'ouverture des inscriptions.</p>
+      <p class="howto">Les heures sont celles d'Haïti. Pour toute question, <a href="#contact">contactez-nous</a>.</p>
+      <h3 class="subhead">Cours enregistrés</h3>
+      <p class="muted" style="margin:0 0 1rem;">Disponibles à tout moment, à votre rythme.</p>
+      <ul class="course-list" id="liste-enregistres"></ul>
+    </div>
+  </section>
+
+  <section id="adhesion" class="join">
+    <div class="wrap">
+      <h2>Rejoindre ISEDEP-HAYTI</h2>
+      <div class="cols">
+        <div>
+          <p>L'organisation compte trois catégories de membres : les membres fondateurs, les membres actifs, qui participent aux activités, et les membres d'honneur, des personnalités choisies pour leur position ou les services rendus.</p>
+        </div>
+        <div>
+          <p><strong>Pour adhérer, il faut :</strong></p>
+          <ul>
+            <li>être majeur ;</li>
+            <li>accepter les statuts, les règlements et les consignes de l'organisation ;</li>
+            <li>n'avoir jamais subi de peine infamante ;</li>
+            <li>présenter une carte d'identité et deux photos.</li>
+          </ul>
+          <div class="fees">
+            <div class="fee"><strong>1 000 gourdes</strong>Cotisation annuelle, à la fin de chaque année</div>
+            <div class="fee"><strong>500 gourdes ou plus</strong>Cotisation de soutien, chaque mois</div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="#contact">Demander la fiche d'adhésion</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <h2>Contact</h2>
+      <div class="cols">
+        <address>
+          <p><span class="lab">Siège social</span>22, bas Lalue, Avenue John Brown<br>Port-au-Prince, Haïti</p>
+          <p><span class="lab">Courriel</span><a href="mailto:isedephaytiorg@gmail.com">isedephaytiorg@gmail.com</a></p>
+          <p><span class="lab">Téléphone et WhatsApp</span></p>
+          <ul>
+            <li><a href="tel:+50949392526">4939-2526</a></li>
+            <li><a href="tel:+50944605516">4460-5516</a></li>
+            <li><a href="tel:+50932686394">3268-6394</a></li>
+            <li><a href="tel:+50934853823">3485-3823</a></li>
+            <li><a href="tel:+50955874786">5587-4786</a></li>
+          </ul>
+        </address>
+
+        <form id="form-contact" novalidate>
+          <div>
+            <label for="nom">Votre nom</label>
+            <input id="nom" name="nom" type="text" autocomplete="name" required>
+          </div>
+          <div>
+            <label for="courriel">Votre courriel ou téléphone</label>
+            <input id="courriel" name="courriel" type="text" autocomplete="email" required>
+          </div>
+          <div>
+            <label for="message">Votre message</label>
+            <textarea id="message" name="message" required></textarea>
+          </div>
+          <button class="btn" type="submit">Envoyer le message</button>
+          <p class="note" id="statut" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="annee">2026</span> ISEDEP-HAYTI. Tous droits réservés.</span>
+    <span>Port-au-Prince, Haïti</span>
+  </div>
+</footer>
+
+<script>
+
+  /* ===== COURS EN LIGNE =====
+     Pour ajouter un cours, copiez un bloc { ... }, collez-le dans la liste
+     et changez les informations. Date au format AAAA-MM-JJ.
+     Un cours passé disparaît tout seul du site.
+     Exemple :
+     { titre: "Titre du cours", formateur: "Nom", date: "2026-11-20", heure: "15h00 à 16h30",
+       description: "Une phrase sur le contenu.", plateforme: "Zoom",
+       lien: "https://meet.google.com/xxx-xxxx-xxx" },
+  */
+  var COURS = [
+  ];
+
+  var WHATSAPP = '50949392526';
+
+  (function afficherCours() {
+    var ul = document.getElementById('liste-cours');
+    var vide = document.getElementById('aucun-cours');
+    var aujourdhui = new Date(); aujourdhui.setHours(0, 0, 0, 0);
+
+    var avenir = COURS.filter(function (c) {
+      return new Date(c.date + 'T00:00:00') >= aujourdhui;
+    }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+
+    if (!avenir.length) { vide.hidden = false; return; }
+
+    avenir.forEach(function (c) {
+      var d = new Date(c.date + 'T00:00:00');
+      var jour = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      var li = document.createElement('li');
+
+      var quand = document.createElement('div');
+      quand.className = 'when';
+      quand.textContent = jour.charAt(0).toUpperCase() + jour.slice(1);
+      var small = document.createElement('small');
+      small.textContent = c.heure + (c.plateforme ? ' \u00b7 ' + c.plateforme : '');
+      quand.appendChild(small);
+
+      var infos = document.createElement('div');
+      var h3 = document.createElement('h3'); h3.textContent = c.titre;
+      infos.appendChild(h3);
+      if (c.formateur) {
+        var f = document.createElement('p'); f.textContent = 'Avec ' + c.formateur;
+        infos.appendChild(f);
+      }
+      if (c.description) {
+        var p = document.createElement('p'); p.textContent = c.description;
+        infos.appendChild(p);
+      }
+      var actions = document.createElement('div'); actions.className = 'actions';
+      var ins = document.createElement('a');
+      ins.className = 'btn small';
+      ins.textContent = 'S\u2019inscrire par WhatsApp';
+      ins.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(
+        'Bonjour, je souhaite m\u2019inscrire au cours \u00ab ' + c.titre + ' \u00bb du ' + jour + '.');
+      actions.appendChild(ins);
+      if (c.lien) {
+        var j = document.createElement('a');
+        j.className = 'btn small ghost';
+        j.textContent = 'Rejoindre la s\u00e9ance';
+        j.href = c.lien; j.target = '_blank'; j.rel = 'noopener';
+        actions.appendChild(j);
+      }
+      infos.appendChild(actions);
+
+      li.appendChild(quand); li.appendChild(infos);
+      ul.appendChild(li);
+    });
+  })();
+
+  document.getElementById('annee').textContent = new Date().getFullYear();
+
+  /* ===== COURS ENREGISTRÉS =====
+     Pour ajouter un cours, copiez une ligne { ... } et séparez-les par une virgule.
+     "lien" = lien YouTube, Google Drive, etc.
+     Exemple :
+     { titre: "Titre du cours", description: "Une phrase sur le contenu.", lien: "https://www.youtube.com/watch?v=XXXXXXXXXXX" },
+  */
+  var COURS_ENREGISTRES = [
+  ];
+
+  (function afficherEnregistres() {
+    var ul = document.getElementById('liste-enregistres');
+    if (!COURS_ENREGISTRES.length) {
+      var vide = document.createElement('p');
+      vide.className = 'empty';
+      vide.textContent = 'Les cours enregistrés seront bientôt disponibles.';
+      ul.replaceWith(vide);
+      return;
+    }
+    COURS_ENREGISTRES.forEach(function (c) {
+      var li = document.createElement('li');
+      var h = document.createElement('h4'); h.textContent = c.titre; li.appendChild(h);
+      if (c.description) { var d = document.createElement('p'); d.textContent = c.description; li.appendChild(d); }
+      var a = document.createElement('a');
+      a.className = 'btn'; a.textContent = 'Regarder le cours';
+      a.href = /^https?:\/\//i.test(c.lien) ? c.lien : '#contact';
+      a.target = '_blank'; a.rel = 'noopener';
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+  })();
+</script>
+</body>
+</html>
