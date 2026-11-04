@@ -147,6 +147,9 @@
 
   footer { border-top: 1px solid var(--rule); padding-block: 2rem; color: var(--ink-soft); font-size: .95rem; }
   footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem 2rem; }
+  .news-grid { display: grid; gap: 1rem 4rem; }
+  @media (min-width: 52rem) { .news-grid { grid-template-columns: 1fr 1fr; } }
+  .wa-note { margin: 1.2rem 0 0; color: var(--ink-soft); font-size: .98rem; max-width: 52ch; }
 </style>
 </head>
 <body>
@@ -159,6 +162,7 @@
       <ul>
         <li><a href="#mission">Mission</a></li>
         <li><a href="#activites">Champs d'activité</a></li>
+        <li><a href="#actualites">Annonces et projets</a></li>
         <li><a href="#cours">Cours en ligne</a></li>
         <li><a href="#adhesion">Adhésion</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -225,6 +229,22 @@
     </div>
   </section>
 
+  <section id="actualites">
+    <div class="wrap">
+      <h2>Annonces et projets</h2>
+      <div class="news-grid">
+        <div>
+          <h3 class="subhead">Annonces</h3>
+          <ul class="course-list" id="liste-annonces"></ul>
+        </div>
+        <div>
+          <h3 class="subhead">Projets en cours</h3>
+          <ul class="course-list" id="liste-projets"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="cours">
     <div class="wrap">
       <h2>Cours en ligne</h2>
@@ -260,8 +280,9 @@
           </div>
           <div class="actions">
             <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdfCi5q9haBK33uGkDDSdLZjD6klK80ZOyqZ-OfAfCVc_-E_w/viewform" target="_blank" rel="noopener">Remplir la fiche d'adhésion en ligne</a>
-            <a class="btn ghost" href="#contact">Une question ?</a>
+            <a class="btn ghost" id="wa-adhesion" href="#contact">Prévenir sur WhatsApp</a>
           </div>
+          <p class="wa-note">Après avoir rempli la fiche en ligne, touchez « Prévenir sur WhatsApp » pour nous avertir de votre inscription.</p>
         </div>
       </div>
     </div>
@@ -384,6 +405,55 @@
   })();
 
   document.getElementById('annee').textContent = new Date().getFullYear();
+
+  /* ===== ANNONCES ET PROJETS =====
+     Pour ajouter un élément, copiez une ligne { ... } et séparez-les par une virgule.
+     Les plus récents en premier. "lien" est facultatif (Facebook, article, document...).
+     Exemple d'annonce :
+     { quand: "20 novembre 2026", titre: "Titre de l'annonce", description: "Quelques phrases.", lien: "https://..." },
+     Exemple de projet :
+     { quand: "En cours", titre: "Nom du projet", description: "Objectif et avancement.", lien: "" },
+  */
+  var ANNONCES = [
+  ];
+  var PROJETS = [
+  ];
+
+  function afficherListe(idListe, elements, messageVide) {
+    var ul = document.getElementById(idListe);
+    if (!ul) { return; }
+    if (!elements.length) {
+      var vide = document.createElement('p');
+      vide.className = 'empty';
+      vide.textContent = messageVide;
+      ul.replaceWith(vide);
+      return;
+    }
+    elements.forEach(function (e) {
+      var li = document.createElement('li');
+      if (e.quand) { var w = document.createElement('p'); w.className = 'when'; w.textContent = e.quand; li.appendChild(w); }
+      var h = document.createElement('h4'); h.textContent = e.titre; li.appendChild(h);
+      if (e.description) { var d = document.createElement('p'); d.textContent = e.description; li.appendChild(d); }
+      if (e.lien && /^https?:\/\//i.test(e.lien)) {
+        var a = document.createElement('a');
+        a.className = 'btn ghost'; a.textContent = 'En savoir plus';
+        a.href = e.lien; a.target = '_blank'; a.rel = 'noopener';
+        li.appendChild(a);
+      }
+      ul.appendChild(li);
+    });
+  }
+  afficherListe('liste-annonces', ANNONCES, 'Les annonces de l\u2019organisation seront publiées ici.');
+  afficherListe('liste-projets', PROJETS, 'Les projets en cours seront présentés ici.');
+
+  /* Bouton WhatsApp après l'inscription en ligne */
+  var waAdh = document.getElementById('wa-adhesion');
+  if (waAdh) {
+    waAdh.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(
+      'Bonjour ISEDEP-HAYTI, j\u2019ai rempli la fiche d\u2019adhésion en ligne. Mon nom : '
+    );
+    waAdh.target = '_blank'; waAdh.rel = 'noopener';
+  }
 
   /* ===== COURS ENREGISTRÉS =====
      Pour ajouter un cours, copiez une ligne { ... } et séparez-les par une virgule.
