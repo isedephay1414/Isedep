@@ -150,6 +150,7 @@
   .news-grid { display: grid; gap: 1rem 4rem; }
   @media (min-width: 52rem) { .news-grid { grid-template-columns: 1fr 1fr; } }
   .wa-note { margin: 1.2rem 0 0; color: var(--ink-soft); font-size: .98rem; max-width: 52ch; }
+  .affiche { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 4px; margin: .6rem 0 .9rem; }
 </style>
 </head>
 <body>
@@ -409,12 +410,19 @@
   /* ===== ANNONCES ET PROJETS =====
      Pour ajouter un élément, copiez une ligne { ... } et séparez-les par une virgule.
      Les plus récents en premier. "lien" est facultatif (Facebook, article, document...).
-     Exemple d'annonce :
-     { quand: "20 novembre 2026", titre: "Titre de l'annonce", description: "Quelques phrases.", lien: "https://..." },
+     Exemple d'annonce (le champ "image" est facultatif : nom d'un fichier envoyé dans le dépôt) :
+     { quand: "20 novembre 2026", titre: "Titre de l'annonce", description: "Quelques phrases.", image: "affiche.png", lien: "https://..." },
      Exemple de projet :
      { quand: "En cours", titre: "Nom du projet", description: "Objectif et avancement.", lien: "" },
   */
   var ANNONCES = [
+    {
+      quand: "Mercredi 18 novembre 2026, à 15 heures",
+      titre: "Convocation à une réunion (reportée)",
+      description: "La réunion du comité directeur, prévue le lundi 2 novembre 2026, est reportée au mercredi 18 novembre 2026, à 15 heures, à Fontamara (entre Fontamara 27 et 43), au Centre d'études modernes, rue Dagrin.",
+      image: "affiche-reunion-18-novembre.png",
+      alt: "Affiche de convocation d'ISEDEP-HAYTI : réunion reportée au mercredi 18 novembre 2026 à 15 heures, à Fontamara, avec l'ordre du jour."
+    }
   ];
   var PROJETS = [
   ];
@@ -434,6 +442,15 @@
       if (e.quand) { var w = document.createElement('p'); w.className = 'when'; w.textContent = e.quand; li.appendChild(w); }
       var h = document.createElement('h4'); h.textContent = e.titre; li.appendChild(h);
       if (e.description) { var d = document.createElement('p'); d.textContent = e.description; li.appendChild(d); }
+      if (e.image) {
+        var lienImg = document.createElement('a');
+        lienImg.href = e.image; lienImg.target = '_blank'; lienImg.rel = 'noopener';
+        var img = document.createElement('img');
+        img.className = 'affiche'; img.src = e.image; img.loading = 'lazy';
+        img.alt = e.alt || e.titre;
+        lienImg.appendChild(img);
+        li.appendChild(lienImg);
+      }
       if (e.lien && /^https?:\/\//i.test(e.lien)) {
         var a = document.createElement('a');
         a.className = 'btn ghost'; a.textContent = 'En savoir plus';
