@@ -151,6 +151,16 @@
   @media (min-width: 52rem) { .news-grid { grid-template-columns: 1fr 1fr; } }
   .wa-note { margin: 1.2rem 0 0; color: var(--ink-soft); font-size: .98rem; max-width: 52ch; }
   .affiche { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 4px; margin: .6rem 0 .9rem; }
+  .video-wrap { position: relative; aspect-ratio: 16 / 9; margin: .6rem 0 .9rem; }
+  .video-wrap iframe, .video-wrap video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 4px; background: #000; }
+  .partners { list-style: none; margin: 0 0 1.5rem; padding: 0; display: grid; gap: 0 3rem; }
+  @media (min-width: 40rem) { .partners { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 64rem) { .partners { grid-template-columns: 1fr 1fr 1fr; } }
+  .partners li { border-top: 1px solid var(--rule); padding-block: 1.2rem; }
+  .partners img { display: block; max-height: 64px; max-width: 100%; width: auto; background: #fff; padding: .3rem; border-radius: 4px; margin-bottom: .7rem; }
+  .partners h3 { font-size: 1.15rem; margin: 0 0 .3rem; }
+  .partners p { margin: 0 0 .6rem; color: var(--ink-soft); }
+  .partners a { font-weight: 600; }
 </style>
 </head>
 <body>
@@ -166,6 +176,7 @@
         <li><a href="#actualites">Annonces et projets</a></li>
         <li><a href="#cours">Cours en ligne</a></li>
         <li><a href="#adhesion">Adhésion</a></li>
+        <li><a href="#partenaires">Partenaires</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
@@ -285,6 +296,17 @@
           </div>
           <p class="wa-note">Après avoir rempli la fiche en ligne, touchez « Prévenir sur WhatsApp » pour nous avertir de votre inscription.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="partenaires">
+    <div class="wrap">
+      <h2>Nos partenaires</h2>
+      <p class="muted" style="max-width:60ch;margin:0 0 2rem;">Les institutions et organisations avec lesquelles ISEDEP-HAYTI travaille pour atteindre ses objectifs.</p>
+      <ul class="partners" id="liste-partenaires"></ul>
+      <div class="actions">
+        <a class="btn ghost" href="#contact">Devenir partenaire</a>
       </div>
     </div>
   </section>
@@ -412,6 +434,7 @@
      Les plus récents en premier. "lien" est facultatif (Facebook, article, document...).
      Exemple d'annonce (le champ "image" est facultatif : nom d'un fichier envoyé dans le dépôt) :
      { quand: "20 novembre 2026", titre: "Titre de l'annonce", description: "Quelques phrases.", image: "affiche.png", lien: "https://..." },
+     Pour une vidéo, ajoutez video: "lien YouTube ou Facebook" (ou le nom d'un fichier .mp4 envoyé dans le dépôt).
      Exemple de projet :
      { quand: "En cours", titre: "Nom du projet", description: "Objectif et avancement.", lien: "" },
   */
@@ -426,6 +449,39 @@
   ];
   var PROJETS = [
   ];
+
+  /* Intègre une vidéo : YouTube, Facebook public, ou fichier .mp4/.webm envoyé dans le dépôt */
+  function integrerVideo(url) {
+    var wrap = document.createElement('div');
+    wrap.className = 'video-wrap';
+    var yt = url.match(/(?:youtube\.com\/watch\?(?:.*&)?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/)([\w-]{11})/);
+    if (yt) {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + yt[1];
+      f.title = 'Vidéo ISEDEP-HAYTI'; f.loading = 'lazy'; f.allowFullscreen = true;
+      f.allow = 'accelerometer; encrypted-media; gyroscope; picture-in-picture';
+      wrap.appendChild(f); return wrap;
+    }
+    if (/^https?:\/\/(www\.|m\.|web\.)?(facebook\.com|fb\.watch)\//i.test(url)) {
+      var fb = document.createElement('iframe');
+      fb.src = 'https://www.facebook.com/plugins/video.php?show_text=false&href=' + encodeURIComponent(url);
+      fb.title = 'Vidéo ISEDEP-HAYTI'; fb.loading = 'lazy'; fb.allowFullscreen = true;
+      fb.allow = 'encrypted-media; picture-in-picture';
+      wrap.appendChild(fb); return wrap;
+    }
+    if (/\.(mp4|webm|ogg)(\?.*)?$/i.test(url)) {
+      var vd = document.createElement('video');
+      vd.controls = true; vd.preload = 'metadata'; vd.src = url;
+      wrap.appendChild(vd); return wrap;
+    }
+    if (/^https?:\/\//i.test(url)) {
+      var a = document.createElement('a');
+      a.className = 'btn ghost'; a.href = url; a.target = '_blank'; a.rel = 'noopener';
+      a.textContent = 'Regarder la vidéo';
+      return a;
+    }
+    return null;
+  }
 
   function afficherListe(idListe, elements, messageVide) {
     var ul = document.getElementById(idListe);
@@ -442,6 +498,10 @@
       if (e.quand) { var w = document.createElement('p'); w.className = 'when'; w.textContent = e.quand; li.appendChild(w); }
       var h = document.createElement('h4'); h.textContent = e.titre; li.appendChild(h);
       if (e.description) { var d = document.createElement('p'); d.textContent = e.description; li.appendChild(d); }
+      if (e.video) {
+        var v = integrerVideo(e.video);
+        if (v) { li.appendChild(v); }
+      }
       if (e.image) {
         var lienImg = document.createElement('a');
         lienImg.href = e.image; lienImg.target = '_blank'; lienImg.rel = 'noopener';
@@ -471,6 +531,42 @@
     );
     waAdh.target = '_blank'; waAdh.rel = 'noopener';
   }
+
+  /* ===== PARTENAIRES =====
+     Une ligne { ... } par institution, séparées par une virgule.
+     "logo" (fichier image envoyé dans le dépôt) et "lien" sont facultatifs.
+     Exemple :
+     { nom: "Nom de l'institution", description: "Nature du partenariat.", logo: "logo-partenaire.png", lien: "https://..." },
+  */
+  var PARTENAIRES = [
+  ];
+
+  (function afficherPartenaires() {
+    var ul = document.getElementById('liste-partenaires');
+    if (!PARTENAIRES.length) {
+      var vide = document.createElement('p');
+      vide.className = 'empty';
+      vide.textContent = 'Les institutions partenaires seront présentées ici.';
+      ul.replaceWith(vide);
+      return;
+    }
+    PARTENAIRES.forEach(function (x) {
+      var li = document.createElement('li');
+      if (x.logo) {
+        var img = document.createElement('img');
+        img.src = x.logo; img.alt = 'Logo de ' + x.nom; img.loading = 'lazy';
+        li.appendChild(img);
+      }
+      var h = document.createElement('h3'); h.textContent = x.nom; li.appendChild(h);
+      if (x.description) { var d = document.createElement('p'); d.textContent = x.description; li.appendChild(d); }
+      if (x.lien && /^https?:\/\//i.test(x.lien)) {
+        var a = document.createElement('a');
+        a.href = x.lien; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Visiter le site';
+        li.appendChild(a);
+      }
+      ul.appendChild(li);
+    });
+  })();
 
   /* ===== COURS ENREGISTRÉS =====
      Pour ajouter un cours, copiez une ligne { ... } et séparez-les par une virgule.
